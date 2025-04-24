@@ -9,7 +9,7 @@ const Layout = () => {
         <Outlet />
       </main>
       <footer className="bg-gray-200 text-center p-4 text-sm text-gray-600">
-        Minimal Library App &copy; {new Date().getFullYear()}
+        Online Book Library &copy; {new Date().getFullYear()}
       </footer>
     </div>
   );
