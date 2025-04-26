@@ -1,1 +1,23 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .layout {
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300;
+  }
+
+  .footer {
+    @apply bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-400 transition-colors duration-300;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white;
+  }
+
+  button:disabled {
+    @apply dark:opacity-60;
+  }
+}

@@ -25,12 +25,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded shadow-md">
+    <div className="max-w-md mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
       {error && <p className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+          <label className="block text-sm font-bold mb-2" htmlFor="email">
             Email
           </label>
           <input
@@ -43,7 +43,7 @@ const LoginPage = () => {
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+          <label className="block text-sm font-bold mb-2" htmlFor="password">
             Password
           </label>
           <input
@@ -65,7 +65,7 @@ const LoginPage = () => {
           </button>
         </div>
       </form>
-      <p className="text-center text-gray-600 text-sm mt-6">
+      <p className="text-center text-gray-600 dark:text-gray-300 text-sm mt-6">
         Don't have an account? <Link to="/signup" className="text-indigo-600 hover:text-indigo-800">Sign Up</Link>
       </p>
     </div>

@@ -52,7 +52,12 @@ const CatalogPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Book Catalog</h1>
+      <h1 className="text-3xl font-bold mb-2 text-gray-800 dark:text-gray-100">
+        Book Catalog
+      </h1>
+      <p className="text-gray-600 dark:text-gray-400 mb-6">
+        Find your next read. Search by title or author below.
+      </p>
       <div className="mb-6">
         <input
           type="text"

@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { ref, onValue, update, set } from "firebase/database";
 import { db } from "../firebase";
 import { useAuth } from "../hooks/useAuth";
 import { format, addDays } from "date-fns";
+import AverageRating from "../components/AverageRating";
+import ReviewList from "../components/ReviewList";
+import ReviewForm from "../components/ReviewForm";
+import SocialShare from "../components/SocialShare";
 
 const BookDetailsPage = () => {
   const { bookId } = useParams();
@@ -54,9 +58,7 @@ const BookDetailsPage = () => {
     updates[`/books/${bookId}/status`] = "borrowed";
     updates[`/books/${bookId}/borrowedBy`] = currentUser.uid;
     updates[`/books/${bookId}/dueDate`] = dueDate;
-    updates[
-      `/users/<span class="math-inline">\{currentUser\.uid\}/borrowedBooks/</span>{bookId}`
-    ] = true;
+    updates[`/users/${currentUser.uid}/borrowedBooks/${bookId}`] = true;
 
     try {
       await update(ref(db), updates);
@@ -79,9 +81,7 @@ const BookDetailsPage = () => {
     updates[`/books/${bookId}/status`] = "available";
     updates[`/books/${bookId}/borrowedBy`] = null;
     updates[`/books/${bookId}/dueDate`] = null;
-    updates[
-      `/users/<span class="math-inline">\{currentUser\.uid\}/borrowedBooks/</span>{bookId}`
-    ] = null; // Setting to null removes it
+    updates[`/users/${currentUser.uid}/borrowedBooks/${bookId}`] = null;
 
     try {
       await update(ref(db), updates);
@@ -100,66 +100,101 @@ const BookDetailsPage = () => {
   const isBorrowedByCurrentUser =
     book.status === "borrowed" && book.borrowedBy === currentUser?.uid;
 
+  if (!book && !loading && !error) {
+    return <p className="text-center p-10">Book data not available.</p>;
+  }
+
   return (
-    <div className="bg-white p-6 rounded shadow-md max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">{book.title}</h1>
-      <p className="text-lg text-gray-700 mb-4">by {book.author}</p>
-      <p className="text-sm text-gray-600 mb-1">ISBN: {book.isbn || "N/A"}</p>
-      <p className="text-sm text-gray-600 mb-4">
-        Status:{" "}
-        <span
-          className={`font-medium ${
-            book.status === "available" ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          {book.status}
-        </span>
-        {book.status === "borrowed" && book.dueDate && (
-          <span className="ml-2 text-gray-500">
-            (Due: {format(new Date(book.dueDate), "MMM dd, yyyy")})
-          </span>
-        )}
-      </p>
+    <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-lg max-w-3xl mx-auto">
+      {book && !loading && !error && (
+        <>
+          {book.coverUrl && (
+            <img
+              src={book.coverUrl}
+              alt={`Cover for ${book.title}`}
+              className="w-32 h-48 object-cover rounded shadow-md float-right ml-6 mb-4"
+            />
+          )}
+          <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
+            {book.title}
+          </h1>
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
+            by {book.author}
+          </p>
+          <div className="mb-4">
+            <AverageRating bookId={bookId} />
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+            ISBN: {book.isbn || "N/A"}
+          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            Status:{" "}
+            <span
+              className={`font-medium ${
+                book.status === "available"
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-red-600 dark:text-red-400"
+              }`}
+            >
+              {book.status}
+            </span>
+            {book.status === "borrowed" && book.dueDate && (
+              <span className="ml-2 text-gray-500">
+                (Due: {format(new Date(book.dueDate), "MMM dd, yyyy")})
+              </span>
+            )}
+          </p>
 
-      {error && (
-        <p className="bg-red-100 text-red-700 p-2 rounded mb-4 text-sm">
-          {error}
-        </p>
-      )}
+          {book.description && (
+            <p className="text-gray-700 dark:text-gray-300 mb-6 mt-4 clear-right">
+              {book.description}
+            </p>
+          )}
 
-      {currentUser && book.status === "available" && (
-        <button
-          onClick={handleBorrow}
-          disabled={actionLoading}
-          className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
-        >
-          {actionLoading ? "Borrowing..." : "Borrow Book"}
-        </button>
-      )}
+          {error && (
+            <p className="bg-red-100 text-red-700 p-2 rounded mb-4 text-sm">
+              {error}
+            </p>
+          )}
 
-      {isBorrowedByCurrentUser && (
-        <button
-          onClick={handleReturn}
-          disabled={actionLoading}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
-        >
-          {actionLoading ? "Returning..." : "Return Book"}
-        </button>
-      )}
+          {currentUser && book.status === "available" && (
+            <button
+              onClick={handleBorrow}
+              disabled={actionLoading}
+              className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            >
+              {actionLoading ? "Borrowing..." : "Borrow Book"}
+            </button>
+          )}
 
-      {!currentUser && book.status === "available" && (
-        <p className="text-sm text-gray-600 mt-4">
-          <Link to="/login" className="text-indigo-600 hover:underline">
-            Login
-          </Link>{" "}
-          to borrow this book.
-        </p>
-      )}
+          {isBorrowedByCurrentUser && (
+            <button
+              onClick={handleReturn}
+              disabled={actionLoading}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            >
+              {actionLoading ? "Returning..." : "Return Book"}
+            </button>
+          )}
 
-      {book.status === "borrowed" && !isBorrowedByCurrentUser && (
-        <p className="text-sm text-red-600 mt-4">
-          This book is currently borrowed.
-        </p>
+          {!currentUser && book.status === "available" && (
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
+              <Link to="/login" className="text-indigo-600 hover:underline">
+                Login
+              </Link>{" "}
+              to borrow this book.
+            </p>
+          )}
+
+          {book.status === "borrowed" && !isBorrowedByCurrentUser && (
+            <p className="text-sm text-red-600 mt-4">
+              This book is currently borrowed.
+            </p>
+          )}
+          <SocialShare bookTitle={book.title} bookUrl={window.location.href} />
+          <ReviewList bookId={bookId} />
+          <ReviewForm bookId={bookId} />
+        </>
       )}
     </div>
   );

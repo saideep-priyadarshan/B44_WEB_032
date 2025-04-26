@@ -1,0 +1,85 @@
+{
+  "books": {
+    "-N_RandomId1": {
+      "title": "The Midnight Library",
+      "author": "Matt Haig",
+      "isbn": "978-0735211292",
+      "status": "available",
+      "borrowedBy": null,
+      "dueDate": null,
+      "description": "Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.",
+      "coverUrl": "https://images-na.ssl-images-amazon.com/images/I/81PNGi1k-dL.jpg"
+    },
+    "-N_RandomId2": {
+      "title": "Project Hail Mary",
+      "author": "Andy Weir",
+      "isbn": "978-0593135204",
+      "status": "available",
+      "borrowedBy": null,
+      "dueDate": null,
+      "description": "Ryland Grace is the sole survivor on a desperate, last-chance mission—and if he fails, humanity and the earth itself will perish.",
+      "coverUrl": "https://images-na.ssl-images-amazon.com/images/I/91Bd7P8D-vL.jpg"
+    },
+    "-N_RandomId3": {
+      "title": "Klara and the Sun",
+      "author": "Kazuo Ishiguro",
+      "isbn": "978-0593318171",
+      "status": "borrowed",
+      "borrowedBy": "someUserId1",
+      "dueDate": "2025-05-10",
+      "description": "Klara, an Artificial Friend with outstanding observational qualities, watches carefully the behavior of those who come in to browse, and of those who pass in the street outside.",
+      "coverUrl": "https://images-na.ssl-images-amazon.com/images/I/71pby38gHcS.jpg"
+    },
+    "-N_RandomId4": {
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "isbn": "978-0735211291",
+      "status": "available",
+      "borrowedBy": null,
+      "dueDate": null,
+      "description": "An easy and proven way to build good habits and break bad ones. Tiny changes, remarkable results.",
+      "coverUrl": "https://images-na.ssl-images-amazon.com/images/I/81wgcld4wxL.jpg"
+    }
+  },
+  "users": {
+    "someUserId1": {
+      "name": "Alice",
+      "email": "alice@example.com",
+      "borrowedBooks": {
+        "-N_RandomId3": true
+      }
+    },
+    "someUserId2": {
+      "name": "Bob",
+      "email": "bob@example.com",
+      "borrowedBooks": {}
+    }
+  },
+  "reviews": {
+    "-N_RandomId2": {
+      "reviewId1": {
+        "userId": "someUserId1",
+        "userName": "Alice",
+        "rating": 5,
+        "text": "Absolutely fantastic sci-fi! Couldn't put it down.",
+        "timestamp": 1714091706000
+      },
+      "reviewId2": {
+        "userId": "someUserId2",
+        "userName": "Bob",
+        "rating": 4,
+        "text": "Great read, very engaging plot.",
+        "timestamp": 1714005306000
+      }
+    },
+    "-N_RandomId4": {
+      "reviewId3": {
+        "userId": "someUserId1",
+        "userName": "Alice",
+        "rating": 5,
+        "text": "Practical and life-changing advice.",
+        "timestamp": 1713918906000
+      }
+    }
+  }
+}
