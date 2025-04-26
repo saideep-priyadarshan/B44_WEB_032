@@ -24,7 +24,7 @@ This project is a functional and elegant frontend application for a Library Mana
 
 - **Frontend:** React.js (v19), Vite
 - **Routing:** React Router DOM (v7.5.2)
-- **Styling:** Tailwind CSS (v4.1.4)
+- **Styling:** Tailwind CSS (v3.3.5)
 - **State Management:** React Context API, React Hooks (`useState`, `useEffect`, `useContext`)
 - **Backend:** Firebase (Authentication, Realtime Database)
 - **Date Management:** `date-fns`
