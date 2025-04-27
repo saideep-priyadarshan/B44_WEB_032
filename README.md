@@ -4,6 +4,9 @@
 
 This project is a functional and elegant frontend application for a Library Management System. Built with React, Vite, and Firebase Realtime Database, it allows users to browse books, manage their borrowed items, authenticate securely, and interact through reviews and ratings. The UI is styled using Tailwind CSS, featuring a clean aesthetic and a dark mode option.
 
+## Deployed App
+Frontend: libmsys.netlify.app
+
 ## Features
 
 - **User Authentication:** Secure Sign Up, Login, and Logout using Firebase Authentication.
